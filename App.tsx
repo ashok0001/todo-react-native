@@ -1,23 +1,20 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import Home from './components/HomePage';
-import Products from './components/Products';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import Home from './src/components/HomePage';
+import Products from './src/components/Products';
 
 const App = (): JSX.Element => {
   return (
-    <View>
+    <View style={styles.container}>
       <Home />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
+  container: {},
   textColor: {
     color: 'blue',
   },

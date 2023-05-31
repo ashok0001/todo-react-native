@@ -8,30 +8,14 @@ import {
   TextInput,
   Platform,
   Button,
+  Dimensions,
 } from 'react-native';
 import React, {useState} from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import {CustomButton} from './CustomButton';
 // import DateTimePicker from '@react-native-community/datetimepicker';
 
 const CreateTaskFrom = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-
-  const handleDateChange = (event, date) => {
-    if (Platform.OS === 'android') {
-      setShowDatePicker(false);
-    }
-
-    setSelectedDate(date);
-  };
-
-  const handleClearDate = () => {
-    setSelectedDate(null);
-  };
-
-  const showDatepicker = () => {
-    setShowDatePicker(true);
-  };
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Create Task </Text>
@@ -87,28 +71,7 @@ const CreateTaskFrom = () => {
           </View>
         </View>
         <View style={styles.inputWrapper}>
-          <Text style={styles.taskTitle}>Task Description</Text>
-          {/* <View>
-            <Button title="Select Date" onPress={showDatepicker} />
-            {showDatePicker && (
-              <DateTimePicker
-                value={selectedDate || new Date()}
-                mode="date"
-                display="default"
-                onChange={handleDateChange}
-              />
-            )}
-            {selectedDate && (
-              <View style={styles.selectedDateContainer}>
-                <TextInput
-                  style={styles.selectedDateText}
-                  value={selectedDate.toISOString().split('T')[0]}
-                  editable={false}
-                />
-                <Button title="Clear Date" onPress={handleClearDate} />
-              </View>
-            )}
-          </View> */}
+          <CustomButton butonName={'CREATE TASK'} />
         </View>
       </View>
     </View>
@@ -122,12 +85,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#120E43',
     paddingHorizontal: 10,
     paddingVertical: 10,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
   },
   heading: {
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
-    marginVertical: 5,
+    marginVertical: 10,
     textAlign: 'center',
   },
   taskTitle: {

@@ -12,7 +12,7 @@ const TodaysTask = () => {
       <Text style={styles.heading}>Todays Task</Text>
 
       <View>
-        {[1, 1, 1, 1, 1].map((item, index) => (
+        {[1, 1, 1].map((item, index) => (
           <TaskCard key={20 + index} item={item} />
         ))}
       </View>

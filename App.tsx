@@ -4,12 +4,25 @@ import React from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import Home from './src/components/HomePage';
 import Products from './src/components/Products';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {BottomBar} from './src/components/BottomBar';
+import HomeScreen from './src/screen/HomeScreen/HomeScreen';
+import {Profile} from './src/screen/Profile';
+import {CompletedTask} from './src/screen/CompletedTask';
+
+const Stack = createNativeStackNavigator();
 
 const App = (): JSX.Element => {
   return (
-    <View style={styles.container}>
-      <Home />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Completed" component={CompletedTask} />
+      </Stack.Navigator>
+      <BottomBar />
+    </NavigationContainer>
   );
 };
 

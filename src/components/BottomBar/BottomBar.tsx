@@ -4,13 +4,13 @@ import React from 'react';
 import {Text} from 'react-native';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-// import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const BottomBar = () => {
-  //   const navigation = useNavigation();
+  const navigation = useNavigation();
 
   const navigateToScreen = (screenName: string) => {
-    // navigation.navigate(screenName);
+    navigation.navigate(screenName);
     console.warn('navitate to Screen');
   };
   //   console.warn('navitate to Screen');
@@ -21,14 +21,14 @@ const BottomBar = () => {
         <Icon name="home" size={24} color="#fff" />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigateToScreen('Done')}>
+      <TouchableOpacity onPress={() => navigateToScreen('Completed')}>
         <Icon name="check" size={24} color="#fff" />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigateToScreen('Create')}>
+      <TouchableOpacity onPress={() => navigateToScreen('Home')}>
         <Icon name="plus" size={24} color="#fff" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigateToScreen('User')}>
+      <TouchableOpacity onPress={() => navigateToScreen('Profile')}>
         <Icon name="user" size={24} color="#fff" />
       </TouchableOpacity>
     </View>
@@ -36,6 +36,7 @@ const BottomBar = () => {
 };
 
 const styles = StyleSheet.create({
+ 
   container: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -43,7 +44,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#120E43',
     height: 60,
     borderTopWidth: 1,
-    borderTopColor: '#ccc',
+    // borderTopColor: '#ccc',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    borderWidth: 1,
+
   },
 });
 

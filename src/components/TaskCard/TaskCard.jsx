@@ -31,7 +31,7 @@ export default TaskCard;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
@@ -39,10 +39,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#120E43',
     borderRadius: 5,
-    marginVertical:5,
+    marginVertical: 5,
   },
   textContainer: {},
   inputView: {},
-  title: {color: 'white',marginBottom:5},
+  title: {color: 'white', marginBottom: 5},
   description: {color: 'white'},
 });

@@ -21,8 +21,6 @@ export default function Home() {
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
-        {/* <BottomBar /> */}
-        {/* <Text>hello top bar</Text> */}
           <View>
             <TodaysTask />
           </View>
@@ -32,7 +30,6 @@ export default function Home() {
             <BottomBar />
           </View>
         </View>
-        
       </ScrollView>
     </SafeAreaView>
   );

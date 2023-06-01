@@ -4,7 +4,7 @@
 /* eslint-disable semi */
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-import TaskCard from './TaskCard';
+import { TaskCard } from '../TaskCard';
 
 const TodaysTask = () => {
   return (
@@ -25,11 +25,13 @@ export default TodaysTask;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 10,
+    marginTop: 20,
   },
   heading: {
     fontSize: 20,
     fontWeight: 'bold',
     marginVertical: 5,
     color: 'black',
+    textAlign: 'center',
   },
 });

@@ -14,6 +14,9 @@ import { TodaysTask } from '../../components/TodaysTask';
 export default function HomeScreen({navigation}) {
   return (
     <SafeAreaView>
+      <View>
+        <Text style={styles.introText}>  Hello  Ashok 👋 Here Is Your Todays Task</Text>
+      </View>
       <ScrollView>
         <TodaysTask />
       </ScrollView>
@@ -32,4 +35,13 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
+  introText:{
+color:'white',
+backgroundColor:"#1FAA59",
+padding:20,
+fontSize:16,
+textAlign:'center',
+margin:10,
+borderRadius:5
+  }
 });

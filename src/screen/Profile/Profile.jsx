@@ -6,9 +6,11 @@ import {
   Image,
   TextInput,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {TaskCard} from '../../components/TaskCard';
 
 const Profile = () => {
   const [username, setUsername] = useState('username');
@@ -41,7 +43,8 @@ const Profile = () => {
   };
 
   return (
-    <View style={{alignItems: 'center', marginTop: 20}}>
+    <ScrollView>
+       <View style={{alignItems: 'center', marginTop: 20}}>
       <TouchableOpacity onPress={selectImageFromLibrary}>
         <Image
           source={{
@@ -90,16 +93,27 @@ const Profile = () => {
       </TouchableOpacity>
 
       <View style={styles.tasks}>
-        <View style={[styles.taskDetail,styles.completedTaskDetail]}>
+        <View style={[styles.taskDetail, styles.completedTaskDetail]}>
           <Text style={styles.completedValue}>40</Text>
           <Text style={styles.completedText}>Completed</Text>
         </View>
-        <View style={[styles.taskDetail,styles.inProgressTaskDetail]}>
+        <View style={[styles.taskDetail, styles.inProgressTaskDetail]}>
           <Text style={styles.inProgressValue}>10</Text>
           <Text style={styles.inProgressText}>Incompleted</Text>
         </View>
       </View>
+
+      <View style={styles.taskContainer}>
+        <Text style={styles.allTaskText}>All Task</Text>
+        <>
+          {[1, 1, 1, 1, 1, 1, 1, 1,1].map(item => (
+            <TaskCard />
+          ))}
+        </>
+      </View>
     </View>
+    </ScrollView>
+   
   );
 };
 
@@ -109,15 +123,23 @@ const styles = StyleSheet.create({
   tasks: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    
-   
-   
+  },
+  taskContainer: {
+    width: '100%',
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
+  allTaskText: {
+    fontSize: 20,
+    color: 'black',
+    fontWeight: '500',
+    marginBottom: 20,
   },
   taskDetail: {
     alignItems: 'center',
-    padding:20,
-    borderRadius:5,
-    marginHorizontal:10,
+    padding: 20,
+    borderRadius: 5,
+    marginHorizontal: 10,
   },
   completedValue: {
     color: 'white',
@@ -132,10 +154,10 @@ const styles = StyleSheet.create({
   inProgressValue: {
     color: 'white',
   },
-  completedTaskDetail:{
-    backgroundColor:'green'
+  completedTaskDetail: {
+    backgroundColor: 'green',
   },
-  inProgressTaskDetail:{
-    backgroundColor:'orange'
-  }
+  inProgressTaskDetail: {
+    backgroundColor: 'orange',
+  },
 });

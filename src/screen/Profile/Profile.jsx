@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,11 +11,18 @@ import {
 import DocumentPicker from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {TaskCard} from '../../components/TaskCard';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAllTasks} from '../../Redux/Task/Action';
+import { getData } from '../../config/AsyncStorage';
+import { getUserProfile, updateUserProfile } from '../../Redux/Auth/Action';
 
 const Profile = () => {
-  const [username, setUsername] = useState('username');
+ 
   const [profilePic, setProfilePic] = useState(null);
   const [isEditingUsername, setIsEditingUsername] = useState(false);
+  const {task,auth} = useSelector(store => store);
+  const dispatch = useDispatch();
+  const [username, setUsername] = useState(auth.userProfile?.fullName);
 
   const selectImageFromCamera = () => {
     // Implement your logic to launch the camera and capture a photo
@@ -29,91 +36,112 @@ const Profile = () => {
       });
 
       setProfilePic(response[0].uri);
-      // console.warn('image ', response[0].uri);
-      // console.log("---",response)
+      dispatch(updateUserProfile({profileImage:response[0].uri}))
     } catch (error) {
       console.warn('Error selecting image:', error);
     }
   };
 
   const updateUsername = () => {
-    // Implement your logic to update the username
     console.log('Updating username:', username);
+    dispatch(updateUserProfile({fullName:username}))
     setIsEditingUsername(false);
   };
 
+  // useEffect(() => {
+  //   // dispatch(getAllTasks());
+  //   console.log(' task ---- ', task);
+  // }, [auth.userProfile]);
+
+  useEffect(() => {
+    const getUserProfileData = async () => {
+      const jwt = await getData("jwt");
+      console.log(jwt);
+      if (jwt) {
+        dispatch(getUserProfile(jwt));
+      }
+
+      console.log('jwt async storate ', jwt);
+    };
+
+    getUserProfileData();
+    dispatch(getAllTasks());
+
+    console.log('--------------');
+  }, []);
+
   return (
     <ScrollView>
-       <View style={{alignItems: 'center', marginTop: 20}}>
-      <TouchableOpacity onPress={selectImageFromLibrary}>
-        <Image
-          source={{
-            uri:
-              profilePic ||
-              'https://cdn.pixabay.com/photo/2015/03/04/22/35/avatar-659651_640.png',
-          }}
-          style={{width: 150, height: 150, borderRadius: 75}}
-        />
-      </TouchableOpacity>
+      <View style={{alignItems: 'center', marginTop: 20}}>
+        <TouchableOpacity onPress={selectImageFromLibrary}>
+          <Image
+            source={{
+              uri:
+                profilePic ||
+                auth.userProfile?.profileImage ||
+                'https://cdn.pixabay.com/photo/2015/03/04/22/35/avatar-659651_640.png',
+            }}
+            style={{width: 150, height: 150, borderRadius: 75}}
+          />
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => setIsEditingUsername(true)}>
-        <View style={{}}>
-          {/* <Text style={{fontSize: 16}}>{username} </Text> */}
-          {isEditingUsername ? (
-            <TextInput
-              style={{fontSize: 16}}
-              placeholder="Enter username"
-              value={username}
-              onChangeText={text => setUsername(text)}
-              onBlur={updateUsername}
-              autoFocus
-            />
-          ) : (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: 20,
-              }}>
-              <Text
+        <TouchableOpacity onPress={() => setIsEditingUsername(true)}>
+          <View style={{}}>
+            {/* <Text style={{fontSize: 16}}>{username} </Text> */}
+            {isEditingUsername ? (
+              <TextInput
+                style={{fontSize: 16}}
+                placeholder="Enter username"
+                value={username}
+                onChangeText={text => setUsername(text)}
+                onBlur={updateUsername}
+                autoFocus
+              />
+            ) : (
+              <View
                 style={{
-                  fontSize: 20,
-                  fontWeight: '500',
-                  color: 'black',
-                  marginRight: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingVertical: 20,
                 }}>
-                {username}
-              </Text>
-              <TouchableOpacity onPress={() => setIsEditingUsername(true)}>
-                <Icon name="pencil" size={20} color="#000" />
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
-      </TouchableOpacity>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: '500',
+                    color: 'black',
+                    marginRight: 10,
+                  }}>
+                  {username}
+                </Text>
+                <TouchableOpacity onPress={() => setIsEditingUsername(true)}>
+                  <Icon name="pencil" size={20} color="#000" />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        </TouchableOpacity>
 
-      <View style={styles.tasks}>
-        <View style={[styles.taskDetail, styles.completedTaskDetail]}>
-          <Text style={styles.completedValue}>40</Text>
-          <Text style={styles.completedText}>Completed</Text>
+        <View style={styles.tasks}>
+          <View style={[styles.taskDetail, styles.completedTaskDetail]}>
+            <Text style={styles.completedValue}>40</Text>
+            <Text style={styles.completedText}>Completed</Text>
+          </View>
+          <View style={[styles.taskDetail, styles.inProgressTaskDetail]}>
+            <Text style={styles.inProgressValue}>10</Text>
+            <Text style={styles.inProgressText}>Incompleted</Text>
+          </View>
         </View>
-        <View style={[styles.taskDetail, styles.inProgressTaskDetail]}>
-          <Text style={styles.inProgressValue}>10</Text>
-          <Text style={styles.inProgressText}>Incompleted</Text>
+
+        <View style={styles.taskContainer}>
+          <Text style={styles.allTaskText}>All Task</Text>
+          <>
+            {task.tasks.map(item => (
+              <TaskCard item={item} type={item.status} />
+            ))}
+          </>
         </View>
       </View>
-
-      <View style={styles.taskContainer}>
-        <Text style={styles.allTaskText}>All Task</Text>
-        <>
-          {[1, 1, 1, 1, 1, 1, 1, 1,1].map(item => (
-            <TaskCard />
-          ))}
-        </>
-      </View>
-    </View>
     </ScrollView>
-   
   );
 };
 

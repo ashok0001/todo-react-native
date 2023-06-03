@@ -1,22 +1,43 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text} from 'react-native';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+import {getData} from '../../config/AsyncStorage';
+import {useDispatch, useSelector} from 'react-redux';
+import {getUserProfile} from '../../Redux/Auth/Action';
+import {getAllTasks} from '../../Redux/Task/Action';
 
 const BottomBar = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {task,auth} = useSelector(store => store);
 
-  const navigateToScreen = (screenName: string) => {
+  const navigateToScreen = (screenName) => {
     navigation.navigate(screenName);
-    console.warn('navitate to Screen');
   };
-  //   console.warn('navitate to Screen');
+
+  useEffect(() => {
+    const getUserProfileData = async () => {
+      const jwt = await getData('jwt');
+      console.log(jwt);
+      if (jwt) {
+        dispatch(getUserProfile(jwt));
+      }
+
+      console.log('jwt async storate ', jwt);
+    };
+
+    getUserProfileData();
+    dispatch(getAllTasks());
+
+    console.log('--------------');
+  }, []);
+  
   return (
     <View style={styles.container}>
-      {/* <Text>hello ashok this is bottom bar</Text> */}
       <TouchableOpacity onPress={() => navigateToScreen('Home')}>
         <Icon name="home" size={24} color="#fff" />
       </TouchableOpacity>
@@ -36,7 +57,6 @@ const BottomBar = () => {
 };
 
 const styles = StyleSheet.create({
- 
   container: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -44,13 +64,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#120E43',
     height: 60,
     borderTopWidth: 1,
-    // borderTopColor: '#ccc',
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     borderWidth: 1,
-
   },
 });
 

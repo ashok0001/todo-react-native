@@ -10,12 +10,17 @@ import {
   Button,
 } from 'react-native';
 import { TodaysTask } from '../../components/TodaysTask';
+import { useSelector } from 'react-redux';
 
 export default function HomeScreen({navigation}) {
+  const store = useSelector(store => store);
+  const {task,auth} = useSelector(store => store);
+  console.log("store - ",store);
+  
   return (
     <SafeAreaView>
       <View>
-        <Text style={styles.introText}>  Hello  Ashok 👋 Here Is Your Todays Task</Text>
+        <Text style={styles.introText}>  Hello  {auth.userProfile?.fullName} 👋 Here Is Your Todays Task</Text>
       </View>
       <ScrollView>
         <TodaysTask />

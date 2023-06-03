@@ -3,15 +3,40 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable semi */
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {TaskCard} from '../TaskCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile } from '../../Redux/Auth/Action';
+import { getAllTasks } from '../../Redux/Task/Action';
+
 
 const TodaysTask = () => {
   const [selectedPriority, setSelectedPriority] = useState('all');
+  const {task,auth} = useSelector(store => store);
+  const dispatch=useDispatch();
 
   const handleSelectPriority = priority => {
     setSelectedPriority(priority);
   };
+
+  useEffect(() => {
+    const getUserProfileData = async () => {
+      const jwt = await getData("jwt");
+      console.log(jwt);
+      if (jwt) {
+        dispatch(getUserProfile(jwt));
+      }
+
+      console.log('jwt async storate ', jwt);
+    };
+
+    getUserProfileData();
+    dispatch(getAllTasks());
+
+    console.log('--------------');
+  }, []);
+
+
   return (
     <View style={styles.container}>
       <View>
@@ -85,8 +110,8 @@ const TodaysTask = () => {
       {/* <Text style={styles.heading}>Todays Task</Text> */}
 
       <View>
-        {[1, 1, 1,1,1,1].map((item, index) => (
-          <TaskCard key={20 + index} item={item} type={'inprogress'} />
+        {task.tasks.map((item, index) => (
+          <TaskCard key={20 + index} item={item} type={item.status} />
         ))}
       </View>
     </View>

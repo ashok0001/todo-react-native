@@ -1,1 +1,2 @@
-export {default as Profile} from './HomeScreen';
+/* eslint-disable prettier/prettier */
+export {default as Home} from './HomeScreen';

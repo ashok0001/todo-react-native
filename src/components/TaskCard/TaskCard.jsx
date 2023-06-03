@@ -8,13 +8,11 @@ const TaskCard = ({item, isCompleted, type}) => {
   return (
     <View style={[styles.container, styles[`container_${type}`]]}>
       <View style={styles.inputView}>
-        <Text style={styles.title}>TaskCard</Text>
-        <Text style={styles.description}>
-          wow what lovely day, it't really nice
-        </Text>
+        <Text style={styles.title}>{item?.title}</Text>
+        <Text style={styles.description}>{item.description}</Text>
       </View>
       <View>
-        {!isCompleted && (
+        {item.status!=="COMPLETED" && (
           <BouncyCheckbox
             isChecked={isCompleted}
             size={25}
@@ -25,8 +23,8 @@ const TaskCard = ({item, isCompleted, type}) => {
             disableBuiltInState={isCompleted}
           />
         )}
-        {isCompleted && (
-          <TouchableOpacity onPress={() => console.warn("delete task")}>
+        {item.status=="COMPLETED"  && (
+          <TouchableOpacity onPress={() => console.warn('delete task')}>
             <Icon name="closecircle" size={24} color="#FF6263" />
           </TouchableOpacity>
         )}
@@ -49,14 +47,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 5,
   },
-  container_completed: {
+  container_COMPLETED: {
     backgroundColor: 'rgba(0, 216, 74, 0.5)',
   },
-  container_inprogress: {
+  container_INPROGRESS: {
     backgroundColor: 'rgba(255, 102, 102, 0.5)',
   },
   textContainer: {},
   inputView: {},
-  title: {color: 'white', marginBottom: 5},
-  description: {color: 'white'},
+  title: {color: 'white', marginBottom: 5,fontSize:17},
+  description: {color: 'white',opacity:50},
 });

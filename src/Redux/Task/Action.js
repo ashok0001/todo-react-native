@@ -26,10 +26,10 @@ export const createTask = taskData => {
         api.defaults.headers.common.Authorization = `Bearer ${jwt}`;
       }
 
-      const response = await api.post('/tasks/create', taskData);
+      const response = await api.post('/api/tasks/create', taskData);
 
       const createdTask = response.data;
-
+console.log("created task",createdTask);
       dispatch(createTaskSuccess(createdTask));
     } catch (error) {
       dispatch(createTaskFailure(error));
@@ -74,10 +74,12 @@ export const deleteTask = taskId => {
         api.defaults.headers.common.Authorization = `Bearer ${jwt}`;
       }
 
-      await api.delete(`/tasks/${taskId}`);
+      const res=await api.delete(`/api/tasks/delete/${taskId}`);
+      console.log("deleted task", res.data)
 
       dispatch(deleteTaskSuccess(taskId));
     } catch (error) {
+      console.log("catch error ",error,"--- task id --- ",taskId)
       dispatch(deleteTaskFailure(error));
     }
   };
@@ -93,11 +95,12 @@ export const updateTaskStatus = (taskId, newStatus) => {
         api.defaults.headers.common.Authorization = `Bearer ${jwt}`;
       }
 
-      const response = await api.put(`/tasks/${taskId}/status`, {
+      const response = await api.put(`/api/tasks/update/${taskId}`, {
         status: newStatus,
       });
 
       const updatedTask = response.data;
+      console.log("updated task",updatedTask)
 
       dispatch(updateTaskStatusSuccess(updatedTask));
     } catch (error) {

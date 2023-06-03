@@ -3,8 +3,18 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import Icon from 'react-native-vector-icons/AntDesign';
 import React from 'react';
+import {useDispatch} from 'react-redux';
+import {deleteTask, updateTaskStatus} from '../../Redux/Task/Action';
 
 const TaskCard = ({item, isCompleted, type}) => {
+  const dispatch = useDispatch();
+  const handleDeleteTask = () => {
+    dispatch(deleteTask(item.id));
+  };
+
+  const handleUpdateTaskStatus = () => {
+    dispatch(updateTaskStatus(item.id));
+  };
   return (
     <View style={[styles.container, styles[`container_${type}`]]}>
       <View style={styles.inputView}>
@@ -12,19 +22,19 @@ const TaskCard = ({item, isCompleted, type}) => {
         <Text style={styles.description}>{item.description}</Text>
       </View>
       <View>
-        {item.status!=="COMPLETED" && (
+        {item.status !== 'COMPLETED' && (
           <BouncyCheckbox
             isChecked={isCompleted}
             size={25}
             fillColor="#00D84A"
             unfillColor="#FFFFFF"
             innerIconStyle={{borderWidth: 2}}
-            onPress={() => {}}
+            onPress={handleUpdateTaskStatus}
             disableBuiltInState={isCompleted}
           />
         )}
-        {item.status=="COMPLETED"  && (
-          <TouchableOpacity onPress={() => console.warn('delete task')}>
+        {item.status == 'COMPLETED' && (
+          <TouchableOpacity onPress={handleDeleteTask}>
             <Icon name="closecircle" size={24} color="#FF6263" />
           </TouchableOpacity>
         )}
@@ -55,6 +65,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {},
   inputView: {},
-  title: {color: 'white', marginBottom: 5,fontSize:17},
-  description: {color: 'white',opacity:50},
+  title: {color: 'white', marginBottom: 5, fontSize: 17},
+  description: {color: 'white', opacity: 50},
 });

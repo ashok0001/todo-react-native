@@ -24,31 +24,28 @@ const LoginForm = ({navigation}) => {
   const {auth} = useSelector(store => store);
 
   const handleLogin = values => {
-    console.log(values);
+    
     dispatch(signInUser(values));
   };
 
   useEffect(() => {
     const getUserProfileData = async () => {
-      const jwt = await getData("jwt");
-      console.log(jwt);
+      const jwt = await getData('jwt');
+      
       if (jwt) {
         dispatch(getUserProfile(jwt));
       }
 
-      console.log('jwt async storate ', jwt);
+     
     };
 
     getUserProfileData();
 
-    console.log('--------------');
   }, [auth.jwt]);
 
   useEffect(() => {
-    console.log('nativagation use effect');
     if (auth.userProfile) {
       navigation.navigate('Home');
-      console.log('inside navigation - ');
     }
   }, []);
 

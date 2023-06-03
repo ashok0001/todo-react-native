@@ -3,17 +3,16 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable semi */
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {TaskCard} from '../TaskCard';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserProfile } from '../../Redux/Auth/Action';
-import { getAllTasks } from '../../Redux/Task/Action';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {getUserProfile} from '../../Redux/Auth/Action';
+import {getAllTasks} from '../../Redux/Task/Action';
 
 const TodaysTask = () => {
   const [selectedPriority, setSelectedPriority] = useState('all');
-  const {task,auth} = useSelector(store => store);
-  const dispatch=useDispatch();
+  const {task, auth} = useSelector(store => store);
+  const dispatch = useDispatch();
 
   const handleSelectPriority = priority => {
     setSelectedPriority(priority);
@@ -21,21 +20,17 @@ const TodaysTask = () => {
 
   useEffect(() => {
     const getUserProfileData = async () => {
-      const jwt = await getData("jwt");
-      console.log(jwt);
+      const jwt = await getData('jwt');
       if (jwt) {
         dispatch(getUserProfile(jwt));
       }
 
-      console.log('jwt async storate ', jwt);
     };
 
     getUserProfileData();
     dispatch(getAllTasks());
 
-    console.log('--------------');
   }, []);
-
 
   return (
     <View style={styles.container}>
@@ -45,11 +40,22 @@ const TodaysTask = () => {
         <View style={styles.priorityContainer}>
           <TouchableOpacity
             onPress={() => handleSelectPriority('all')}
-            style={[styles.button,{
-              backgroundColor:
-                selectedPriority === 'all' ? '#120E43' : 'white',
-            }]}>
-            <Text style={[styles.allPrioity, styles.priorityText,{color: selectedPriority === 'all' ? 'white' : '#120E43'}]}>All</Text>
+            style={[
+              styles.button,
+              {
+                backgroundColor:
+                  selectedPriority === 'all' ? '#120E43' : 'white',
+                borderColor: '#120E43',
+              },
+            ]}>
+            <Text
+              style={[
+                styles.allPrioity,
+                styles.priorityText,
+                {color: selectedPriority === 'all' ? 'white' : '#120E43'},
+              ]}>
+              All
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => handleSelectPriority('high')}
@@ -58,6 +64,7 @@ const TodaysTask = () => {
               {
                 backgroundColor:
                   selectedPriority === 'high' ? '#00D84A' : 'white',
+                borderColor: '#00D84A',
               },
             ]}>
             <Text
@@ -76,6 +83,7 @@ const TodaysTask = () => {
               {
                 backgroundColor:
                   selectedPriority === 'medium' ? '#F4BE2C' : 'white',
+                  borderColor:'#F4BE2C'
               },
             ]}>
             <Text
@@ -94,6 +102,7 @@ const TodaysTask = () => {
               {
                 backgroundColor:
                   selectedPriority === 'low' ? '#FF6263' : 'white',
+                  borderColor:'#FF6263'
               },
             ]}>
             <Text
@@ -124,8 +133,8 @@ const styles = StyleSheet.create({
   sortHeading: {
     fontSize: 20,
     color: 'black',
-    marginTop:10,
-    marginBottom:5
+    marginTop: 10,
+    marginBottom: 5,
   },
   priorityContainer: {
     flexDirection: 'row',
@@ -134,6 +143,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderRadius: 5,
+    borderWidth:1
   },
   priorityText: {
     fontSize: 17,
@@ -150,10 +160,7 @@ const styles = StyleSheet.create({
   allPrioity: {
     color: '#120E43',
   },
-  container: {
-    marginHorizontal: 10,
-    marginTop: 20,
-  },
+ 
   heading: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -163,4 +170,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   low: {},
+  container: {
+    marginHorizontal: 10,
+    marginTop: 20,
+    paddingBottom:85
+  },
 });

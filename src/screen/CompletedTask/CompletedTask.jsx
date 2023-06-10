@@ -3,17 +3,25 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable semi */
 import {View, Text, StyleSheet, ScrollView, Dimensions} from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {TaskCard} from '../../components/TaskCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCompletedTasks } from '../../Redux/Task/Action';
 
 const CompletedTask = () => {
+  const {task}=useSelector(store=>store)
+  const dispatch=useDispatch();
+
+  useEffect(()=>{
+    dispatch(getCompletedTasks())
+  },[])
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Completed Task</Text>
 
       <ScrollView>
-        {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11,1,1,1,1,1,1].map((item, index) => (
-          <TaskCard key={20 + index} item={item} isCompleted={true} type={'completed'}/>
+        {task.completedTasks?.map((item, index) => (
+          <TaskCard key={20 + index} item={item} isCompleted={true} type={'COMPLETED'}/>
         ))}
       </ScrollView>
 

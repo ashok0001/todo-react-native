@@ -7,7 +7,7 @@ import React, {useState, useEffect} from 'react';
 import {TaskCard} from '../TaskCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUserProfile} from '../../Redux/Auth/Action';
-import {getAllTasks} from '../../Redux/Task/Action';
+import {getAllTasks, getTodaysTasks} from '../../Redux/Task/Action';
 
 const TodaysTask = () => {
   const [selectedPriority, setSelectedPriority] = useState('all');
@@ -28,9 +28,13 @@ const TodaysTask = () => {
     };
 
     getUserProfileData();
-    dispatch(getAllTasks());
+  
 
   }, []);
+
+  useEffect(()=>{
+    dispatch(getTodaysTasks(selectedPriority!=="all"?`priority=${selectedPriority}`:''))
+  },[selectedPriority,task.de])
 
   return (
     <View style={styles.container}>
@@ -119,7 +123,7 @@ const TodaysTask = () => {
       {/* <Text style={styles.heading}>Todays Task</Text> */}
 
       <View>
-        {task.tasks.map((item, index) => (
+        {task.todaysTasks?.map((item, index) => (
           <TaskCard key={20 + index} item={item} type={item.status} />
         ))}
       </View>

@@ -1,7 +1,7 @@
-import axios from 'axios';
-
 /* eslint-disable prettier/prettier */
 const {storeData, getData} = require('../../config/AsyncStorage');
+import axios from 'axios';
+import { LOGOUT_SUCCESS } from './ActionType';
 const {api} = require('../../config/api');
 const {
   signupSuccess,
@@ -19,16 +19,10 @@ export const signUpUser = reqData => {
     try {
       // const response = await api.post('/auth/signup', reqData);
 
-      const response = await fetch('http://localhost:5454/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(reqData),
-      });
-      const resData = await response.json();
+      const response = await axios.post('http://172.26.208.1:5454/auth/signup', reqData)
+      // const resData = a;
 
-      const {jwt, status} = resData;
+      const {jwt, status} = response.data;
 
       // const {jwt, status} = await response.data;
 
@@ -96,16 +90,13 @@ export const updateUserProfile = profileData => {
 // singin user
 export const signInUser = reqData => async dispatch => {
   try {
-    const products = await axios.get(
-      'https://fakestoreapi.com/products',
-    );
+    // const products = await axios.get(
+    //   'https://fakestoreapi.com/products',
+    // );
 
-    console.log('products ', products.data);
+    // console.log('products ', products.data);
 
-    const response = await api.post('/auth/signin', {
-      email: 'dev@gmail.com',
-      password: '12345678',
-    });
+    const response = await axios.post('http://172.26.208.1:5454/auth/signin', reqData);
 
     const {jwt, status} = response.data;
 
@@ -115,7 +106,14 @@ export const signInUser = reqData => async dispatch => {
     dispatch(signinSuccess(jwt, status));
     console.log('User signed in successfully.', jwt);
   } catch (error) {
-    console.error('Error signing in user:', error);
+    console.error('Error signing in user:', error,reqData);
     dispatch(signinFailure(error));
   }
+};
+
+export const logoutUserAction = () => async dispatch => {
+  
+    dispatch({type:LOGOUT_SUCCESS});
+    console.log('logout user');
+  
 };

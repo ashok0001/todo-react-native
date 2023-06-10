@@ -9,6 +9,8 @@ import {
   GET_ALL_TASKS_FAILURE,
   GET_ALL_TASKS_REQUEST,
   GET_ALL_TASKS_SUCCESS,
+  GET_COMPLETED_TASKS_SUCCESS,
+  GET_TODAYS_TASKS_SUCCESS,
   UPDATE_TASK_STATUS_FAILURE,
   UPDATE_TASK_STATUS_REQUEST,
   UPDATE_TASK_STATUS_SUCCESS,
@@ -37,6 +39,7 @@ const taskReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         tasks: [...state.tasks, action.payload],
+        todaysTasks:[...state.todaysTasks,action.payload],
         error: null,
       };
     case GET_ALL_TASKS_SUCCESS:
@@ -51,6 +54,7 @@ const taskReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         tasks: state.tasks.filter(task => task.id !== action.payload),
+        todaysTasks:state.todaysTasks.filter(task=>task.id!==action.payload),
         error: null,
       };
     case UPDATE_TASK_STATUS_SUCCESS:
@@ -60,6 +64,10 @@ const taskReducer = (state = initialState, action) => {
         tasks: state.tasks.map(task =>
           task.id === action.payload.id ? action.payload : task,
         ),
+        todaysTasks: state.todaysTasks.map(task =>
+          task.id === action.payload.id ? action.payload : task,
+        ),
+        
         error: null,
       };
     case CREATE_TASK_FAILURE:
@@ -71,6 +79,19 @@ const taskReducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
       };
+      case
+       GET_COMPLETED_TASKS_SUCCESS:
+        return {
+          ...state,
+          loading:false,
+          completedTasks:action.payload,
+        };
+        case GET_TODAYS_TASKS_SUCCESS:
+          return {
+            ...state,
+            loading:false,
+            todaysTasks:action.payload,
+          };
     default:
       return state;
   }

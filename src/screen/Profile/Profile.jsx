@@ -14,9 +14,10 @@ import {TaskCard} from '../../components/TaskCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllTasks} from '../../Redux/Task/Action';
 import { getData } from '../../config/AsyncStorage';
-import { getUserProfile, updateUserProfile } from '../../Redux/Auth/Action';
+import { getUserProfile, logoutUserAction, updateUserProfile } from '../../Redux/Auth/Action';
+import { Login } from '../Login';
 
-const Profile = () => {
+const Profile = ({navigation}) => {
  
   const [profilePic, setProfilePic] = useState(null);
   const [isEditingUsername, setIsEditingUsername] = useState(false);
@@ -69,10 +70,13 @@ const Profile = () => {
 
     console.log('--------------');
   }, []);
-
+const handleLogout=()=>{
+  dispatch(logoutUserAction())
+  navigation.navigate('Login')
+}
   return (
     <ScrollView>
-      <View style={{alignItems: 'center', marginTop: 20}}>
+      <View style={{alignItems: 'center', marginTop: 20,paddingHorizontal:10}}>
         <TouchableOpacity onPress={selectImageFromLibrary}>
           <Image
             source={{
@@ -111,7 +115,7 @@ const Profile = () => {
                     color: 'black',
                     marginRight: 10,
                   }}>
-                  {username}
+                  {username || auth.userProfile?.fullName}
                 </Text>
                 <TouchableOpacity onPress={() => setIsEditingUsername(true)}>
                   <Icon name="pencil" size={20} color="#000" />
@@ -123,11 +127,11 @@ const Profile = () => {
 
         <View style={styles.tasks}>
           <View style={[styles.taskDetail, styles.completedTaskDetail]}>
-            <Text style={styles.completedValue}>40</Text>
+            <Text style={styles.completedValue}>{task.completedTasks?.length}</Text>
             <Text style={styles.completedText}>Completed</Text>
           </View>
           <View style={[styles.taskDetail, styles.inProgressTaskDetail]}>
-            <Text style={styles.inProgressValue}>10</Text>
+            <Text style={styles.inProgressValue}>{task.tasks?.length - task.completedTasks?.length}</Text>
             <Text style={styles.inProgressText}>Incompleted</Text>
           </View>
         </View>
@@ -140,8 +144,15 @@ const Profile = () => {
             ))}
           </>
         </View>
+
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+          <Text style={styles.logoutText}>
+            Logout
+          </Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
+      
   );
 };
 
@@ -155,7 +166,8 @@ const styles = StyleSheet.create({
   taskContainer: {
     width: '100%',
     marginTop: 20,
-    paddingHorizontal: 10,
+    marginBottom:30,
+    // paddingHorizontal: 10,
   },
   allTaskText: {
     fontSize: 20,
@@ -188,4 +200,20 @@ const styles = StyleSheet.create({
   inProgressTaskDetail: {
     backgroundColor: 'orange',
   },
+  logoutButton:{
+    backgroundColor:'#E6425E',
+    padding:20,
+    borderRadius:5,
+    width:'100%',
+    margin:10,
+    // position:"absolute",
+    bottom:0
+
+  },
+  logoutText:{
+    fontSize:20,
+    fontWeight:'bold',
+    textAlign:'center',
+    color:'white'
+  }
 });

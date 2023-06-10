@@ -45,7 +45,7 @@ const Register = ({navigation}) => {
     if (auth.userProfile) {
       navigation.navigate('Home');
     }
-  }, []);
+  }, [auth.jwt]);
 
   const renderForm = ({
     handleChange,

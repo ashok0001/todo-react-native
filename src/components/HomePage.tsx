@@ -11,9 +11,7 @@ import {
 import React from 'react';
 import ScrollBar from './ScrollView';
 import Products from './Products';
-import TaskCard from './TaskCard';
 import TodaysTask from './TodaysTask';
-import CreateTaskFrom from './CreateTaskFrom';
 import BottomBar from './BottomBar/BottomBar';
 
 export default function Home() {
@@ -26,7 +24,6 @@ export default function Home() {
           </View>
 
           <View style={styles.createFormView}>
-            {/* <CreateTaskFrom /> */}
             <BottomBar />
           </View>
         </View>

@@ -3,6 +3,7 @@
 import {
   GET_USER_PROFILE_FAILURE,
   GET_USER_PROFILE_SUCCESS,
+  LOGOUT_SUCCESS,
   SIGNIN_FAILURE,
   SIGNIN_SUCCESS,
   SIGNUP_FAILURE,
@@ -69,6 +70,10 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    case LOGOUT_SUCCESS:
+      return {
+        userProfile: null,
       };
     default:
       return state;

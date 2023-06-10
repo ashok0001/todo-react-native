@@ -15,6 +15,7 @@ import {
   updateTaskStatusRequest,
   updateTaskStatusSuccess,
 } from './ActionCreator';
+import { GET_COMPLETED_TASKS_SUCCESS, GET_TODAYS_TASKS_SUCCESS } from './ActionType';
 
 export const createTask = taskData => {
   return async dispatch => {
@@ -37,7 +38,7 @@ console.log("created task",createdTask);
   };
 };
 
-export const getAllTasks = (status, priority, today) => {
+export const getTodaysTasks = (priority) => {
   return async dispatch => {
     dispatch(getAllTasksRequest());
 
@@ -47,19 +48,55 @@ export const getAllTasks = (status, priority, today) => {
         api.defaults.headers.common.Authorization = `Bearer ${jwt}`;
       }
 
-      const response = await api.get('/api/tasks', {
-        params: {
-          status,
-          priority,
-          today,
-        },
-      });
+      const response = await api.get(`/api/tasks?&today=true&${priority}`,);
+
+      const tasks = response.data;
+
+      dispatch({type:GET_TODAYS_TASKS_SUCCESS,payload:tasks});
+    } catch (error) {
+      console.log("error",error);
+    }
+  };
+};
+
+export const getAllTasks = (param) => {
+  return async dispatch => {
+    dispatch(getAllTasksRequest());
+
+    try {
+      const jwt = await getData('jwt');
+      if (jwt) {
+        api.defaults.headers.common.Authorization = `Bearer ${jwt}`;
+      }
+
+      const response = await api.get(`/api/tasks`,);
 
       const tasks = response.data;
 
       dispatch(getAllTasksSuccess(tasks));
     } catch (error) {
       dispatch(getAllTasksFailure(error));
+    }
+  };
+};
+
+export const getCompletedTasks = (status) => {
+  return async dispatch => {
+
+    try {
+      const jwt = await getData('jwt');
+      if (jwt) {
+        api.defaults.headers.common.Authorization = `Bearer ${jwt}`;
+      }
+
+      const response = await api.get(`/api/tasks?status=COMPLETED`,);
+
+      const tasks = response.data;
+      console.log("completed task ",tasks)
+
+      dispatch({type:GET_COMPLETED_TASKS_SUCCESS,payload:tasks});
+    } catch (error) {
+      console.log("error",error)
     }
   };
 };
